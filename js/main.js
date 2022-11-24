@@ -13,6 +13,7 @@ let tasks = [];
 
 if (localStorage.getItem('tasks')) {
     tasks = JSON.parse(localStorage.getItem('tasks'));
+    console.log(tasks);
     tasks.forEach(task => renderTask(task));
   };
 
@@ -75,10 +76,11 @@ function doneTask(evt) {
 
   let id = Number(parentItem.id);
   const task = tasks.find((task) => task.id === id);
-  task.done === !task.done;
+  task.done = !task.done;
 
-  doneText.classList.toggle('class-done');
+  doneText.classList.toggle('task-done');
 
+  console.log(task, tasks);
   checkIsEmpty();
   saveToStorage();
 };
@@ -100,7 +102,7 @@ function renderTask(task) {
   const doneClass = task.done ? 'task-done' : null;
 
   const newTask = `
-        <li class="bg-light rounded-5 d-flex p-3 mb-1" id="${task.id}">
+        <li class="new-task bg-light rounded-5 d-flex p-3 mb-1" id="${task.id}">
           <span class="${doneClass} h4 m-0">${task.text}</span>
           <div class="ms-auto ps-3 d-flex align-items-center gap-2 justify-content-center">
             <button class="btn btn-outline-success d-flex p-0" type="button" data-action="done">
@@ -116,5 +118,6 @@ function renderTask(task) {
 };
 
 function saveToStorage() {
+  console.log('saveToStorage', tasks);
   localStorage.setItem('tasks', JSON.stringify(tasks));
 };
