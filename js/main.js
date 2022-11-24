@@ -78,7 +78,7 @@ function doneTask(evt) {
   const task = tasks.find((task) => task.id === id);
   task.done = !task.done;
 
-  doneText.classList.toggle('task-done');
+  doneText.classList.toggle('done-text');
 
   console.log(task, tasks);
   checkIsEmpty();
@@ -99,11 +99,11 @@ function checkIsEmpty() {
 };
 
 function renderTask(task) {
-  const doneClass = task.done ? 'task-done' : null;
+  const doneClassText = task.done ? 'done-text' : null;
 
   const newTask = `
         <li class="new-task bg-light rounded-5 d-flex p-3 mb-1" id="${task.id}">
-          <span class="${doneClass} h4 m-0">${task.text}</span>
+          <span class="${doneClassText} h4 m-0">${task.text}</span>
           <div class="ms-auto ps-3 d-flex align-items-center gap-2 justify-content-center">
             <button class="btn btn-outline-success d-flex p-0" type="button" data-action="done">
               <ion-icon size="large" name="checkmark-done-outline"></ion-icon>

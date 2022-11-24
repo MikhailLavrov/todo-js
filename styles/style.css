@@ -51,7 +51,7 @@ ion-icon {
   pointer-events: none;
 }
 
-.task-done {
-  opacity: 0.6;
+.done-text {
+  opacity: 0.3;
   text-decoration: line-through;
 }
