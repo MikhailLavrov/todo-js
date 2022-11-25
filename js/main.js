@@ -2,7 +2,7 @@ const form = document.querySelector('#form');
 const taskInput = document.querySelector('#task-input');
 const taskList = document.querySelector('#tasksList');
 const emptyList = `
-      <li class="list-group-item bg-light p-5 rounded-5 mb-1" id="emptyList">
+      <li class="list-group-item bg-light p-4 rounded-3 mb-1" id="emptyList">
       <div class="d-flex justify-content-center mb-5">
         <img width="100" src="./img/empty.svg" alt="Empty container icon.">
       </div>
@@ -78,6 +78,7 @@ function doneTask(evt) {
   task.done = !task.done;
 
   doneText.classList.toggle('done-text');
+  parentItem.classList.toggle('done-item');
 
   console.log(task, tasks);
   checkIsEmpty();
@@ -99,9 +100,10 @@ function checkIsEmpty() {
 
 function renderTask(task) {
   const doneClassText = task.done ? 'done-text' : null;
+  const doneClassItem = task.done ? 'done-item' : null;
 
   const newTask = `
-        <li class="new-task bg-light rounded-3 d-flex p-1 ps-2 pe-2 mb-1" id="${task.id}">
+        <li class="${doneClassItem} new-task bg-light rounded-3 d-flex p-1 ps-2 pe-2 mb-1" id="${task.id}">
           <span class="${doneClassText} h4 m-0 lh-2">${task.text}</span>
           <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
             <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
