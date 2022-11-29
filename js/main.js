@@ -28,7 +28,7 @@ if (localStorage.getItem('tasks')) {
 
 if (localStorage.getItem('removedTasks')) {
   removedTasks = JSON.parse(localStorage.getItem('removedTasks'));
-  removedTasks.length !== 0 ? doneCountBadge.textContent = removedTasks.length : null;
+  removedTasks.length !== 0 ? removedCountBadge.textContent = removedTasks.length : null;
 };
 
 checkIsEmpty();
