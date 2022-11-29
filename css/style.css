@@ -1,0 +1,98 @@
+:root {
+  /* Dark */
+  --color-black: #000000;
+  --color-dark-blue: #0f1244;
+  /* Green */
+  --color-green: #198754;
+  --color-dark-green: #157347;
+  /* Grey */
+  --color-grey: #999999;
+  --color-grey-opacity: #99999985;
+  --color-grey-light: #d5d5d5;
+}
+
+*,
+*::before,
+*::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-black);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, var(--color-black) 0%, var(--color-dark-blue) 100%);
+}
+
+a {
+  color: #011c40;
+  text-decoration: none;
+}
+
+img {
+  pointer-events: none;
+}
+
+img,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.done-text {
+  opacity: 0.5;
+  text-decoration: line-through;
+  text-decoration-thickness: 10%;
+}
+
+.done-item {
+  background-color: var(--color-grey-light) !important;
+}
+
+.nav-item:hover,
+.nav-item:focus-within {
+  background-color: var(--color-grey);
+}
+
+.active {
+  background-color: var(--color-green) !important;
+  cursor: default !important;
+}
+
+.bg-grey-opacity {
+  background-color: var(--color-grey-opacity);
+}
+
+.new-task:hover {
+  background-color: var(--color-grey-light) !important;
+}
+
+.badge {
+  background-color: var(--color-dark-blue);
+}
+
+.empty-list svg {
+  width: 60px;
+  height: 60px;
+}

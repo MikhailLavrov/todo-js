@@ -1,26 +1,43 @@
 const form = document.querySelector('#form');
 const taskInput = document.querySelector('#task-input');
 const taskList = document.querySelector('#tasksList');
+const headerButton = document.querySelector('#headerButton');
+const doneCountBadge = document.querySelector('#doneCountBadge');
+const removedCountBadge = document.querySelector('#removedCountBadge');
+const navPanel = document.querySelector('#navPanel');
+const navButtons = navPanel.querySelectorAll('button');
+const navLinks = document.querySelectorAll('.nav-link');
+const actualList = document.querySelector('#actualList');
+const doneList = document.querySelector('#doneList');
+const deletedList = document.querySelector('#deletedList');
 const emptyList = `
-      <li class="list-group-item bg-light p-4 rounded-3 mb-1" id="emptyList">
-      <div class="d-flex justify-content-center mb-5">
-        <img width="100" src="./img/empty.svg" alt="Empty container icon.">
-      </div>
-      <p class="text-center fs-1 lh-1 m-0">Task list is empty</p>
+      <li class="p-4 d-flex flex-column align-items-center gap-1 list-group-item bg-light empty-list" id="emptyList">
+        <svg>
+          <use href="./img/empty.svg#emptySvg"></use>
+        </svg>
+        <span class="fs-5">Empty</span>
       </li>`;
 
 let tasks = [];
+let removedTasks = [];
 
 if (localStorage.getItem('tasks')) {
-    tasks = JSON.parse(localStorage.getItem('tasks'));
-    tasks.forEach(task => renderTask(task));
-  };
+  tasks = JSON.parse(localStorage.getItem('tasks'));
+  tasks.forEach(task => renderTask(task));
+};
+
+if (localStorage.getItem('removedTasks')) {
+  removedTasks = JSON.parse(localStorage.getItem('removedTasks'));
+  removedTasks.length !== 0 ? doneCountBadge.textContent = removedTasks.length : null;
+};
 
 checkIsEmpty();
 
 form.addEventListener('submit', addTask);
 taskList.addEventListener('click', removeTask);
 taskList.addEventListener('click', doneTask);
+navPanel.addEventListener('click', makeNavLinkActive);
+headerButton.addEventListener('click', () => setTimeout(() => taskInput.focus(), 0));
 
 function addTask(evt) {
   evt.preventDefault();
@@ -43,7 +60,7 @@ function addTask(evt) {
   taskInput.focus();
 
   checkIsEmpty();
-  saveToStorage();
+  saveTasksToStorage();
 };
 
 function removeTask(evt) {
@@ -56,6 +73,7 @@ function removeTask(evt) {
   // delete task from array
   tasks = tasks.filter(function(task) {
     if (task.id === id) {
+      getRemovedCount(task);
       return false;
     } else {
       return true;
@@ -63,9 +81,10 @@ function removeTask(evt) {
   });
 
   parentNode.remove();
-
+  getDoneCount();
   checkIsEmpty();
-  saveToStorage();
+  saveTasksToStorage();
+  saveRemovedTasksToStorage();
 };
 
 function doneTask(evt) {
@@ -80,9 +99,9 @@ function doneTask(evt) {
   doneText.classList.toggle('done-text');
   parentItem.classList.toggle('done-item');
 
-  console.log(task, tasks);
   checkIsEmpty();
-  saveToStorage();
+  saveTasksToStorage();
+  getDoneCount();
 };
 
 function checkIsEmpty() {
@@ -95,7 +114,7 @@ function checkIsEmpty() {
     emptyItem ? emptyItem.remove() : null;
   }
 
-  saveToStorage();
+  saveTasksToStorage();
 };
 
 function renderTask(task) {
@@ -114,7 +133,46 @@ function renderTask(task) {
   taskList.insertAdjacentHTML('beforeend', newTask);
 };
 
-function saveToStorage() {
-  console.log('saveToStorage', tasks);
+function saveTasksToStorage() {
   localStorage.setItem('tasks', JSON.stringify(tasks));
 };
+
+function saveRemovedTasksToStorage() {
+  localStorage.setItem('removedTasks', JSON.stringify(removedTasks));
+};
+
+function getRemovedCount(task) {
+  removedTasks.push(task);
+  removedCountBadge.textContent = removedTasks.length;
+
+  if (removedTasks.length === 0) {
+    removedCountBadge.textContent = '';
+  }
+}
+
+function getDoneCount() {
+  let doneTasks = [];
+
+  tasks.filter(function(task) {
+    task.done ? doneTasks.push(task) : null;
+  });
+
+  doneCountBadge.textContent = doneTasks.length;
+
+  if (doneTasks.length === 0) {
+    doneCountBadge.textContent = '';
+  }
+
+  localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
+}
+
+function makeNavLinkActive(evt) {
+  if (evt.target === navPanel) {
+    return;
+  }
+
+  navLinks.forEach((link) => {
+    link.classList.remove('active')
+    evt.target === link ? link.classList.add('active') : null;
+  });
+}
