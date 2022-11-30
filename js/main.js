@@ -1,15 +1,18 @@
+//* main
 const form = document.querySelector('#form');
 const taskInput = document.querySelector('#task-input');
 const taskList = document.querySelector('#tasksList');
 const headerButton = document.querySelector('#headerButton');
+//* badges
 const doneCountBadge = document.querySelector('#doneCountBadge');
 const removedCountBadge = document.querySelector('#removedCountBadge');
+//* nav panel (pills)
 const navPanel = document.querySelector('#navPanel');
-const navButtons = navPanel.querySelectorAll('button');
 const navLinks = document.querySelectorAll('.nav-link');
 const actualList = document.querySelector('#actualList');
 const doneList = document.querySelector('#doneList');
 const deletedList = document.querySelector('#deletedList');
+// * templates
 const emptyList = `
       <li class="p-4 d-flex flex-column align-items-center gap-1 list-group-item bg-light empty-list" id="emptyList">
         <svg>
@@ -17,6 +20,12 @@ const emptyList = `
         </svg>
         <span class="fs-5">Empty</span>
       </li>`;
+
+// const newTaskTemplateFragment = document.querySelector('#new-task-template').content; // Находим фрагмент с содержимым темплейта
+// const newTaskTemplate = newTaskTemplateFragment.querySelector('li'); // В фрагменте находим нужный элемент
+// const newTaskElement = newTaskTemplate.cloneNode(true); // Клонируем элемент со всеми "внутренностями"
+// const fragment = document.createDocumentFragment();
+// fragment.appendChild(newTaskElement);
 
 let tasks = [];
 let removedTasks = [];
@@ -29,6 +38,10 @@ if (localStorage.getItem('tasks')) {
 if (localStorage.getItem('removedTasks')) {
   removedTasks = JSON.parse(localStorage.getItem('removedTasks'));
   removedTasks.length !== 0 ? removedCountBadge.textContent = removedTasks.length : null;
+
+  if (deletedList.classList.contains('active')) {
+    removedTasks.forEach(task => renderTask(task));
+  }
 };
 
 checkIsEmpty();
@@ -39,6 +52,7 @@ taskList.addEventListener('click', doneTask);
 navPanel.addEventListener('click', makeNavLinkActive);
 headerButton.addEventListener('click', () => setTimeout(() => taskInput.focus(), 0));
 
+//* main funcs (add, done, remove)
 function addTask(evt) {
   evt.preventDefault();
 
@@ -61,6 +75,23 @@ function addTask(evt) {
 
   checkIsEmpty();
   saveTasksToStorage();
+};
+
+function doneTask(evt) {
+  if (evt.target.dataset.action !== 'done') return;
+  const parentItem = evt.target.closest('li');
+  const doneText = parentItem.querySelector('span');
+
+  let id = Number(parentItem.id);
+  const task = tasks.find((task) => task.id === id);
+  task.done = !task.done;
+
+  doneText.classList.toggle('done-text');
+  parentItem.classList.toggle('done-item');
+
+  checkIsEmpty();
+  saveTasksToStorage();
+  getDoneCount();
 };
 
 function removeTask(evt) {
@@ -87,36 +118,7 @@ function removeTask(evt) {
   saveRemovedTasksToStorage();
 };
 
-function doneTask(evt) {
-  if (evt.target.dataset.action !== 'done') return;
-  const parentItem = evt.target.closest('li');
-  const doneText = parentItem.querySelector('span');
-
-  let id = Number(parentItem.id);
-  const task = tasks.find((task) => task.id === id);
-  task.done = !task.done;
-
-  doneText.classList.toggle('done-text');
-  parentItem.classList.toggle('done-item');
-
-  checkIsEmpty();
-  saveTasksToStorage();
-  getDoneCount();
-};
-
-function checkIsEmpty() {
-  if (tasks.length === 0) {
-    taskList.insertAdjacentHTML('beforebegin', emptyList);
-  }
-
-  if (tasks.length > 0) {
-    const emptyItem = document.querySelector('#emptyList');
-    emptyItem ? emptyItem.remove() : null;
-  }
-
-  saveTasksToStorage();
-};
-
+//* render
 function renderTask(task) {
   const doneClassText = task.done ? 'done-text' : null;
   const doneClassItem = task.done ? 'done-item' : null;
@@ -133,6 +135,7 @@ function renderTask(task) {
   taskList.insertAdjacentHTML('beforeend', newTask);
 };
 
+//* save to storage
 function saveTasksToStorage() {
   localStorage.setItem('tasks', JSON.stringify(tasks));
 };
@@ -141,13 +144,11 @@ function saveRemovedTasksToStorage() {
   localStorage.setItem('removedTasks', JSON.stringify(removedTasks));
 };
 
+//* get count (to badge)
 function getRemovedCount(task) {
   removedTasks.push(task);
   removedCountBadge.textContent = removedTasks.length;
-
-  if (removedTasks.length === 0) {
-    removedCountBadge.textContent = '';
-  }
+  removedTasks.length === 0 ? removedCountBadge.textContent = '' : null;
 }
 
 function getDoneCount() {
@@ -158,13 +159,24 @@ function getDoneCount() {
   });
 
   doneCountBadge.textContent = doneTasks.length;
-
-  if (doneTasks.length === 0) {
-    doneCountBadge.textContent = '';
-  }
+  doneTasks.length === 0 ? doneCountBadge.textContent = '' : null;
 
   localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
 }
+
+//* other utils
+function checkIsEmpty() {
+  if (tasks.length === 0) {
+    taskList.insertAdjacentHTML('beforebegin', emptyList);
+  }
+
+  if (tasks.length > 0) {
+    const emptyItem = document.querySelector('#emptyList');
+    emptyItem ? emptyItem.remove() : null;
+  }
+
+  saveTasksToStorage();
+};
 
 function makeNavLinkActive(evt) {
   if (evt.target === navPanel) {
@@ -172,7 +184,7 @@ function makeNavLinkActive(evt) {
   }
 
   navLinks.forEach((link) => {
-    link.classList.remove('active')
+    link.classList.remove('active');
     evt.target === link ? link.classList.add('active') : null;
   });
 }

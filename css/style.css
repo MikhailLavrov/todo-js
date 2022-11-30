@@ -1,7 +1,7 @@
 :root {
-  /* Dark */
-  --color-black: #000000;
-  --color-dark-blue: #0f1244;
+  /* Blue */
+  --color-dark-blue: rgba(1, 31, 69, 0.858);
+  --color-light-blue: rgb(173, 206, 255);
   /* Green */
   --color-green: #198754;
   --color-dark-green: #157347;
@@ -11,53 +11,16 @@
   --color-grey-light: #d5d5d5;
 }
 
-*,
-*::before,
-*::after {
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-}
-
-html {
-  font-family: Arial, Helvetica, sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--color-black);
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-}
-
-body {
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, var(--color-black) 0%, var(--color-dark-blue) 100%);
-}
-
 a {
-  color: #011c40;
   text-decoration: none;
+}
+
+body {
+  background-color: var(--color-dark-blue);
 }
 
 img {
   pointer-events: none;
-}
-
-img,
-video {
-  display: block;
-  max-width: 100%;
-  height: auto;
 }
 
 .done-text {
