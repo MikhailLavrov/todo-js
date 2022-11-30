@@ -24,45 +24,56 @@
     </div>
   </header>
   <main>
-    <div class="container">
 
-      <!-- Nav pills list -->
-      <ul class="nav nav-pills" id="navPanel">
-        <li class="nav-item bg-grey-opacity">
-          <button class="nav-link link-light active rounded-0" type="button" id="actualList">Actual</button>
-        </li>
-        <li class="nav-item bg-grey-opacity">
-          <button class="nav-link link-light rounded-0" type="button" id="doneList">
-            Done
-            <span class="badge" id="doneCountBadge"></span>
-          </button>
-        </li>
-        <li class="nav-item bg-grey-opacity">
-          <button class="nav-link link-light rounded-0" type="button" id="deletedList">
-            Removed
-            <span class="badge" id="removedCountBadge"></span>
-          </button>
-        </li>
-      </ul>
-      <!-- All tasks list section -->
-      <ul class="m-0 mb-3 mb-md-4 p-3 bg-grey-opacity" id="tasksList"></ul>
-
-      <!-- Add new task section -->
-      <div class="p-3 bg-grey-opacity" id="addTaskBlock">
-        <p class="m-0 mb-3 p-0 h5 text-center text-light">Add new task</p>
-        <!-- Form -->
-        <form id="form">
-          <fieldset class="mb-3 d-flex flex-column">
-            <input class="m-0 mb-2 p-3 h4 border-0" title="Write your task here" id="task-input" type="text" placeholder="Task text" required>
-            <label class="m-0 h5 text-light" for="task-input">Write here your target, scheduled time, expected result</label>
-          </fieldset>
-          <button class="p-3 btn btn-success w-100 rounded-3" type="submit">
-            <span class="h5">Add to list</span>
-          </button>
-        </form>
+    <section class="task-list">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <ul class="nav nav-pills" id="navPanel">
+              <li class="nav-item bg-grey-opacity">
+                <button class="nav-link link-light active rounded-0" type="button" id="actualList">Actual</button>
+              </li>
+              <li class="nav-item bg-grey-opacity">
+                <button class="nav-link link-light rounded-0" type="button" id="doneList">
+                  Done
+                  <span class="badge" id="doneCountBadge"></span>
+                </button>
+              </li>
+              <li class="nav-item bg-grey-opacity">
+                <button class="nav-link link-light rounded-0" type="button" id="deletedList">
+                  Removed
+                  <span class="badge" id="removedCountBadge"></span>
+                </button>
+              </li>
+            </ul>
+            <ul class="m-0 mb-3 mb-md-4 p-3 bg-grey-opacity" id="tasksList"></ul>
+          </div>
+        </div>
       </div>
+    </section>
 
-    </div>
+    <section class="add-tasks">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="p-3 bg-grey-opacity" id="addTaskBlock">
+              <p class="m-0 mb-3 p-0 h5 text-center text-light">Add new task</p>
+              <!-- Form -->
+              <form id="form">
+                <fieldset class="mb-3 d-flex flex-column">
+                  <input class="m-0 mb-2 p-3 h4 border-0" title="Write your task here" id="task-input" type="text" placeholder="Task text" required>
+                  <label class="m-0 h5 text-light" for="task-input">Write here your target, scheduled time, expected result</label>
+                </fieldset>
+                <button class="p-3 btn btn-success w-100 rounded-3" type="submit">
+                  <span class="h5">Add to list</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <!-- <template id="new-task-template">
