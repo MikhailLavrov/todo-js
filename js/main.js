@@ -106,8 +106,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const newTask = `
     <li class="${doneClassItem} list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" id="${task.id}" 
       style="background-color: #f4f6f7;">
-      <label class="visually-hidden" for="doneCheckbox">Close task</label>
-      <input class="form-check-input me-2" type="checkbox" id="doneCheckbox" value="" aria-label="..." data-action="done">
       <span class="${doneClassText}" id="taskText">${task.text}</span>
       
       <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
