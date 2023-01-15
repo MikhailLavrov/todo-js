@@ -108,7 +108,7 @@ window.addEventListener('DOMContentLoaded', () => {
       <button class="btn  btn-outline-info btn-sm" type="button" data-action="edit">&#9998;</button>
         <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
         <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
-      </div>  
+      </div>
     </li>`;
     
     taskList.insertAdjacentHTML('afterbegin', newTask);
@@ -117,6 +117,8 @@ window.addEventListener('DOMContentLoaded', () => {
   function saveToStorage() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   };
+
+  // TODO Доработать со storage
 
   function makeItemEditable(evt) {
     if (evt.target.dataset.action !== "edit") return;
