@@ -62,3 +62,8 @@ button:focus {
 .tab-content::-webkit-scrollbar-thumb {
   background-color: #002aff33;
 }
+
+.editable-text {
+  background-color: white;
+  outline: none;
+}

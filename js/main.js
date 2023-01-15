@@ -17,10 +17,6 @@ window.addEventListener('DOMContentLoaded', () => {
     };
 
   checkIsEmpty();
-
-  addForm.addEventListener('submit', addTask);
-  taskList.addEventListener('click', removeTask);
-  taskList.addEventListener('click', doneTask);
   
   function addTask(evt) {
     evt.preventDefault();
@@ -106,9 +102,10 @@ window.addEventListener('DOMContentLoaded', () => {
     const newTask = `
     <li class="${doneClassItem} list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" id="${task.id}" 
       style="background-color: #f4f6f7;">
-      <span class="${doneClassText}" id="taskText">${task.text}</span>
+      <span class="${doneClassText} w-100 overflow-hidden" id="taskText">${task.text}</span>
       
       <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
+      <button class="btn  btn-outline-info btn-sm" type="button" data-action="edit">&#9998;</button>
         <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
         <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
       </div>  
@@ -120,4 +117,57 @@ window.addEventListener('DOMContentLoaded', () => {
   function saveToStorage() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   };
+
+  function makeItemEditable(evt) {
+    if (evt.target.dataset.action !== "edit") return;
+    
+    let editButton = evt.target;
+    let targetParent = editButton.closest('li');
+    let targetText = targetParent.querySelector('span');
+    
+    targetText.setAttribute('contenteditable', true);
+    targetText.focus();
+    targetText.classList.add('editable-text');
+    editButton.textContent = 'Save'
+    
+    let id = Number(targetParent.id);
+    const task = tasks.find((task) => task.id === id);
+    // task.textContent = targetText.textContent;
+    console.log(task);
+    console.log(targetText.textContent);
+    
+    saveToStorage();
+
+    const finishEdition = (evt) => {
+      if (evt.target !== targetText) {
+        targetText.removeAttribute('contenteditable');
+        targetText.classList.remove('editable-text');
+        editButton.innerHTML = '&#9998;'
+
+        document.removeEventListener('click', finishEdition);
+      }
+    };
+
+    document.addEventListener('click', finishEdition);
+  };
+
+  document.addEventListener('click', (evt) => {
+    const target = evt.target.dataset.action;
+    switch (target) {
+      case 'edit':
+        makeItemEditable(evt);
+        break;
+      case 'done':
+        doneTask(evt);
+        break;
+      case 'delete':
+        removeTask(evt);
+        break;
+      case 'addNew':
+        addTask(evt);
+        break;
+      default:
+        return;
+    }
+  })
 });
