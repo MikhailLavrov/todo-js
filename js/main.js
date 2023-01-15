@@ -1,190 +1,125 @@
-//* main
-const form = document.querySelector('#form');
-const taskInput = document.querySelector('#task-input');
-const taskList = document.querySelector('#tasksList');
-const headerButton = document.querySelector('#headerButton');
-//* badges
-const doneCountBadge = document.querySelector('#doneCountBadge');
-const removedCountBadge = document.querySelector('#removedCountBadge');
-//* nav panel (pills)
-const navPanel = document.querySelector('#navPanel');
-const navLinks = document.querySelectorAll('.nav-link');
-const actualList = document.querySelector('#actualList');
-const doneList = document.querySelector('#doneList');
-const deletedList = document.querySelector('#deletedList');
-// * templates
-const emptyList = `
-      <li class="p-4 d-flex flex-column align-items-center gap-1 list-group-item bg-light empty-list" id="emptyList">
-        <svg>
-          <use href="./img/empty.svg#emptySvg"></use>
-        </svg>
-        <span class="fs-5">Empty</span>
-      </li>`;
+const addForm = document.querySelector('#addForm');
+const addInput = document.querySelector('#addInput');
+const addButton = document.querySelector('#addButton');
+const taskList = document.querySelector('#taskList');
+// const templateFragment = document.querySelector('#newTemplate').content;
+// const template = templateFragment.querySelector('li');
+const emptyItem = `<li class="list-group-item d-flex align-items-center justify-content-center border-0 rounded" id="emptyItem">
+Empty
+</li>`
 
-// const newTaskTemplateFragment = document.querySelector('#new-task-template').content; // Находим фрагмент с содержимым темплейта
-// const newTaskTemplate = newTaskTemplateFragment.querySelector('li'); // В фрагменте находим нужный элемент
-// const newTaskElement = newTaskTemplate.cloneNode(true); // Клонируем элемент со всеми "внутренностями"
-// const fragment = document.createDocumentFragment();
-// fragment.appendChild(newTaskElement);
+window.addEventListener('DOMContentLoaded', () => {
+  let tasks = [];
 
-let tasks = [];
-let removedTasks = [];
+  if (localStorage.getItem('tasks')) {
+      tasks = JSON.parse(localStorage.getItem('tasks'));
+      tasks.forEach(task => renderTask(task));
+    };
 
-if (localStorage.getItem('tasks')) {
-  tasks = JSON.parse(localStorage.getItem('tasks'));
-  tasks.forEach(task => renderTask(task));
-};
+  checkIsEmpty();
 
-if (localStorage.getItem('removedTasks')) {
-  removedTasks = JSON.parse(localStorage.getItem('removedTasks'));
-  removedTasks.length !== 0 ? removedCountBadge.textContent = removedTasks.length : null;
+  addForm.addEventListener('submit', addTask);
+  taskList.addEventListener('click', removeTask);
+  taskList.addEventListener('click', doneTask);
+  
+  function addTask(evt) {
+    evt.preventDefault();
 
-  if (deletedList.classList.contains('active')) {
-    removedTasks.forEach(task => renderTask(task));
-  }
-};
-
-checkIsEmpty();
-
-form.addEventListener('submit', addTask);
-taskList.addEventListener('click', removeTask);
-taskList.addEventListener('click', doneTask);
-navPanel.addEventListener('click', makeNavLinkActive);
-headerButton.addEventListener('click', () => setTimeout(() => taskInput.focus(), 0));
-
-//* main funcs (add, done, remove)
-function addTask(evt) {
-  evt.preventDefault();
-
-  const taskText = taskInput.value;
-
-  let newTask = {
-    id: Date.now(),
-    text: taskText,
-    done: false,
+    addInput.focus();
+  
+    const taskText = addInput.value;
+  
+    let newTask = {
+      id: Date.now(),
+      text: taskText,
+      done: false,
+    };
+  
+    if (!addInput.value) return;
+    
+    renderTask(newTask);
+  
+    tasks.push(newTask);
+          
+    addInput.value = '';
+    addInput.focus();
+  
+    checkIsEmpty();
+    saveToStorage();
   };
 
-  if (!taskInput.value) return;
+  function removeTask(evt) {
+    if (evt.target.dataset.action !== "delete") return;
   
-  renderTask(newTask);
-
-  tasks.push(newTask);
-        
-  taskInput.value = '';
-  taskInput.focus();
-
-  checkIsEmpty();
-  saveTasksToStorage();
-};
-
-function doneTask(evt) {
-  if (evt.target.dataset.action !== 'done') return;
-  const parentItem = evt.target.closest('li');
-  const doneText = parentItem.querySelector('span');
-
-  let id = Number(parentItem.id);
-  const task = tasks.find((task) => task.id === id);
-  task.done = !task.done;
-
-  doneText.classList.toggle('done-text');
-  parentItem.classList.toggle('done-item');
-
-  checkIsEmpty();
-  saveTasksToStorage();
-  getDoneCount();
-};
-
-function removeTask(evt) {
-  if (evt.target.dataset.action !== "delete") return;
-
-  const parentNode = evt.target.closest('li');
-
-  let id = Number(parentNode.id);
-
-  // delete task from array
-  tasks = tasks.filter(function(task) {
-    if (task.id === id) {
-      getRemovedCount(task);
-      return false;
-    } else {
-      return true;
-    };
-  });
-
-  parentNode.remove();
-  getDoneCount();
-  checkIsEmpty();
-  saveTasksToStorage();
-  saveRemovedTasksToStorage();
-};
-
-//* render
-function renderTask(task) {
-  const doneClassText = task.done ? 'done-text' : null;
-  const doneClassItem = task.done ? 'done-item' : null;
-
-  const newTask = `
-        <li class="${doneClassItem} new-task bg-light rounded-3 d-flex p-1 ps-2 pe-2 mb-1" id="${task.id}">
-          <span class="${doneClassText} h4 m-0 lh-2">${task.text}</span>
-          <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
-            <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
-            <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
-          </div>  
-        </li>`;
+    const parentNode = evt.target.closest('li');
   
-  taskList.insertAdjacentHTML('beforeend', newTask);
-};
+    let id = Number(parentNode.id);
+  
+    // delete task from array
+    tasks = tasks.filter(function(task) {
+      if (task.id === id) {
+        return false;
+      } else {
+        return true;
+      };
+    });
+  
+    parentNode.remove();
+  
+    checkIsEmpty();
+    saveToStorage();
+  };
 
-//* save to storage
-function saveTasksToStorage() {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-};
+  function doneTask(evt) {
+    if (evt.target.dataset.action !== 'done') return;
+    const parentItem = evt.target.closest('li');
+    const doneText = parentItem.querySelector('span');
+  
+    let id = Number(parentItem.id);
+    const task = tasks.find((task) => task.id === id);
+    task.done = !task.done;
+  
+    doneText.classList.toggle('done-text');
+    parentItem.classList.toggle('done-item');
+  
+    checkIsEmpty();
+    saveToStorage();
+  };
 
-function saveRemovedTasksToStorage() {
-  localStorage.setItem('removedTasks', JSON.stringify(removedTasks));
-};
+  function checkIsEmpty() {
+    if (tasks.length === 0) {
+      taskList.insertAdjacentHTML('beforebegin', emptyItem);
+    }
+  
+    if (tasks.length > 0) {
+      const emptyItem = document.querySelector('#emptyItem');
+      emptyItem ? emptyItem.remove() : null;
+    }
+  
+    saveToStorage();
+  };
 
-//* get count (to badge)
-function getRemovedCount(task) {
-  removedTasks.push(task);
-  removedCountBadge.textContent = removedTasks.length;
-  removedTasks.length === 0 ? removedCountBadge.textContent = '' : null;
-}
+  function renderTask(task) {
+    const doneClassText = task.done ? 'done-text' : null;
+    const doneClassItem = task.done ? 'done-item' : null;
+  
+    const newTask = `
+    <li class="${doneClassItem} list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" id="${task.id}" 
+      style="background-color: #f4f6f7;">
+      <label class="visually-hidden" for="doneCheckbox">Close task</label>
+      <input class="form-check-input me-2" type="checkbox" id="doneCheckbox" value="" aria-label="..." data-action="done">
+      <span class="${doneClassText}" id="taskText">${task.text}</span>
+      
+      <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
+        <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
+        <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
+      </div>  
+    </li>`;
+    
+    taskList.insertAdjacentHTML('afterbegin', newTask);
+  };
 
-function getDoneCount() {
-  let doneTasks = [];
-
-  tasks.filter(function(task) {
-    task.done ? doneTasks.push(task) : null;
-  });
-
-  doneCountBadge.textContent = doneTasks.length;
-  doneTasks.length === 0 ? doneCountBadge.textContent = '' : null;
-
-  localStorage.setItem('doneTasks', JSON.stringify(doneTasks));
-}
-
-//* other utils
-function checkIsEmpty() {
-  if (tasks.length === 0) {
-    taskList.insertAdjacentHTML('beforebegin', emptyList);
-  }
-
-  if (tasks.length > 0) {
-    const emptyItem = document.querySelector('#emptyList');
-    emptyItem ? emptyItem.remove() : null;
-  }
-
-  saveTasksToStorage();
-};
-
-function makeNavLinkActive(evt) {
-  if (evt.target === navPanel) {
-    return;
-  }
-
-  navLinks.forEach((link) => {
-    link.classList.remove('active');
-    evt.target === link ? link.classList.add('active') : null;
-  });
-}
+  function saveToStorage() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  };
+});

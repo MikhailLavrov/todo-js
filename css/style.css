@@ -1,61 +1,49 @@
-:root {
-  /* Blue */
-  --color-dark-blue: rgba(1, 31, 69, 0.858);
-  --color-light-blue: rgb(173, 206, 255);
-  /* Green */
-  --color-green: #198754;
-  --color-dark-green: #157347;
-  /* Grey */
-  --color-grey: #999999;
-  --color-grey-opacity: #99999985;
-  --color-grey-light: #d5d5d5;
-}
-
 a {
   text-decoration: none;
-}
-
-body {
-  background-color: var(--color-dark-blue);
 }
 
 img {
   pointer-events: none;
 }
 
+.gradient-custom {
+  background: radial-gradient(50% 123.47% at 50% 50%, #00ff94 0%, #720059 100%),
+    linear-gradient(121.28deg, #669600 0%, #ff0000 100%),
+    linear-gradient(360deg, #0029ff 0%, #8fff00 100%),
+    radial-gradient(100% 164.72% at 100% 100%, #6100ff 0%, #00ff57 100%),
+    radial-gradient(100% 148.07% at 0% 0%, #fff500 0%, #51d500 100%);
+  background-blend-mode: screen, color-dodge, overlay, difference, normal;
+}
+
+.visually-hidden {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+
+  white-space: nowrap;
+
+  border: 0;
+
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+}
+
 .done-text {
-  opacity: 0.5;
+  color: #0153138b;
   text-decoration: line-through;
-  text-decoration-thickness: 10%;
 }
 
 .done-item {
-  background-color: var(--color-grey-light) !important;
+  background-color: #59a7000c !important;
 }
 
-.nav-item:hover,
-.nav-item:focus-within {
-  background-color: var(--color-grey);
-}
-
-.active {
-  background-color: var(--color-green) !important;
-  cursor: default !important;
-}
-
-.bg-grey-opacity {
-  background-color: var(--color-grey-opacity);
-}
-
-.new-task:hover {
-  background-color: var(--color-grey-light) !important;
-}
-
-.badge {
-  background-color: var(--color-dark-blue);
-}
-
-.empty-list svg {
-  width: 60px;
-  height: 60px;
+button,
+button:active,
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
 }

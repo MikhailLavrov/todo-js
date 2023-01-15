@@ -10,64 +10,32 @@
   <title>ToDo List App</title>
 </head>
 <body>
-  <header class="bg-grey-opacity p-2 mb-3 mb-md-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 d-flex align-items-center justify-content-between">
-          <h1 class="m-0 h5 text-white">Tasks list for today</h1>
-          <a class="btn-success p-1 ps-3 pe-3 btn-sm" id="headerButton" href="#addTaskBlock">
-            <span class="d-none d-sm-block">Add new task</span>
-            <span class="d-sm-none">+</span>
-          </a>
-        </div>
-      </div>
-    </div>
+  <header class="position-absolute w-100 text-center p-1 bg-white">
+    <a class="d-flex justify-content-center gap-1 align-items-center" href="https://github.com/MikhailLavrov" target="_blank" rel="noopener noreferrer">
+      <img width="20" height="20" src="./img/github.svg" alt="author github link">
+      <span class="text-black-50">MikhailLavrov</span>
+    </a>
   </header>
   <main>
 
-    <section class="task-list">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <ul class="nav nav-pills" id="navPanel">
-              <li class="nav-item bg-grey-opacity">
-                <button class="nav-link link-light active rounded-0" type="button" id="actualList">Actual</button>
-              </li>
-              <li class="nav-item bg-grey-opacity">
-                <button class="nav-link link-light rounded-0" type="button" id="doneList">
-                  Done
-                  <span class="badge" id="doneCountBadge"></span>
-                </button>
-              </li>
-              <li class="nav-item bg-grey-opacity">
-                <button class="nav-link link-light rounded-0" type="button" id="deletedList">
-                  Removed
-                  <span class="badge" id="removedCountBadge"></span>
-                </button>
-              </li>
-            </ul>
-            <ul class="m-0 mb-3 mb-md-4 p-3 bg-grey-opacity" id="tasksList"></ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="add-tasks">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <div class="p-3 bg-grey-opacity" id="addTaskBlock">
-              <p class="m-0 mb-3 p-0 h5 text-center text-light">Add new task</p>
-              <!-- Form -->
-              <form id="form">
-                <fieldset class="mb-3 d-flex flex-column">
-                  <input class="m-0 mb-2 p-3 h4 border-0" title="Write your task here" id="task-input" type="text" placeholder="Task text" required>
-                  <label class="m-0 h5 text-light" for="task-input">Write here your target, scheduled time, expected result</label>
-                </fieldset>
-                <button class="p-3 btn btn-success w-100 rounded-3" type="submit">
-                  <span class="h5">Add to list</span>
-                </button>
-              </form>
+    <section class="vh-100 gradient-custom">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+            <div class="card">
+              <div class="card-body p-sm-5 p-sm-5">
+                <form class="d-flex justify-content-center align-items-center mb-4" id="addForm">
+                  <div class="form-outline flex-fill">
+                    <input type="text" id="addInput" class="form-control" placeholder="New task...">
+                    <label class="form-label visually-hidden" for="addInput">New task...</label>
+                  </div>
+                  <button type="submit" class="btn btn-info ms-2" id="addButton">Add</button>
+                </form>
+    
+                <div class="tab-content">
+                  <ul class="list-group mb-0" id="taskList"></ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -76,13 +44,12 @@
 
   </main>
 
-  <!-- <template id="new-task-template">
-    <li class="${doneClassItem} new-task bg-light rounded-3 d-flex p-1 ps-2 pe-2 mb-1" id="${task.id}">
-      <span class="${doneClassText} h4 m-0 lh-2">${task.text}</span>
-      <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
-        <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
-        <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
-      </div>  
+  <!-- <template id="newTemplate">
+    <li class="list-group-item d-flex align-items-center border-0 mb-0 rounded new-item"
+      style="background-color: #f4f6f7;">
+      <label class="visually-hidden" for="doneCheckbox">Close task</label>
+      <input class="form-check-input me-2" type="checkbox" id="doneCheckbox" aria-label="..." data-action="done">
+      <span id="taskText"></span>
     </li>
   </template> -->
 
