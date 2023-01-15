@@ -43,6 +43,25 @@ window.addEventListener('DOMContentLoaded', () => {
     checkIsEmpty();
     saveToStorage();
   };
+  
+  function renderTask(task) {
+    const doneClassText = task.done ? 'done-text' : null;
+    const doneClassItem = task.done ? 'done-item' : null;
+  
+    const newTask = `
+    <li class="${doneClassItem} list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" id="${task.id}" 
+      style="background-color: #f4f6f7;">
+      <span class="${doneClassText} w-100 overflow-hidden" id="taskText">${task.text}</span>
+      
+      <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
+      <button class="btn  btn-outline-info btn-sm" type="button" data-action="edit">&#9998;</button>
+        <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
+        <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
+      </div>
+    </li>`;
+    
+    taskList.insertAdjacentHTML('afterbegin', newTask);
+  };
 
   function removeTask(evt) {
     if (evt.target.dataset.action !== "delete") return;
@@ -95,25 +114,6 @@ window.addEventListener('DOMContentLoaded', () => {
     saveToStorage();
   };
 
-  function renderTask(task) {
-    const doneClassText = task.done ? 'done-text' : null;
-    const doneClassItem = task.done ? 'done-item' : null;
-  
-    const newTask = `
-    <li class="${doneClassItem} list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" id="${task.id}" 
-      style="background-color: #f4f6f7;">
-      <span class="${doneClassText} w-100 overflow-hidden" id="taskText">${task.text}</span>
-      
-      <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
-      <button class="btn  btn-outline-info btn-sm" type="button" data-action="edit">&#9998;</button>
-        <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
-        <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
-      </div>
-    </li>`;
-    
-    taskList.insertAdjacentHTML('afterbegin', newTask);
-  };
-
   function saveToStorage() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   };
@@ -134,9 +134,7 @@ window.addEventListener('DOMContentLoaded', () => {
     
     let id = Number(targetParent.id);
     const task = tasks.find((task) => task.id === id);
-    // task.textContent = targetText.textContent;
-    console.log(task);
-    console.log(targetText.textContent);
+    task.text = targetText.textContent;
     
     saveToStorage();
 
