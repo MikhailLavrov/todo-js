@@ -5,52 +5,55 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" href="styles/style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
   <title>ToDo List App</title>
 </head>
-<body class="pt-5 pb-5 d-flex flex-column justify-content-center align-content-center">
+<body>
+  <header class="position-absolute w-100 text-center p-1 bg-white">
+    <a class="d-flex justify-content-center gap-1 align-items-center" href="https://github.com/MikhailLavrov" target="_blank" rel="noopener noreferrer">
+      <img width="20" height="20" src="./img/github.svg" alt="author github link">
+      <span class="text-black-50">MikhailLavrov</span>
+    </a>
+  </header>
   <main>
-    <div class="container-sm">
-      
-      <!-- Head text -->
-      <div class="text-center text-light mb-5">
-        <h1>Things to do</h1>
-        <p class="h4 m-0">task list for today</p>
-      </div>
 
-      <!-- Tasks list block -->
-      <ul class="p-0 m-0 mb-5" id="tasksList"></ul>
-
-      <!-- Add tasks block -->
-      <div class="bg-light rounded-3 p-3">
-        <p class="m-0 mb-3 p-2 h4 text-light text-center bg-black rounded-3">Add new task</p>
-        <!-- Form -->
-        <form id="form">
-          <fieldset class="mb-3 d-flex flex-column">
-            <input class="m-0 mb-2 p-3 h4 bg-dark bg-opacity-10 border-0" id="task-input" type="text" placeholder="Task text">
-            <label class="m-0 h5" for="task-input">Write here your target, scheduled time, expected result</label>
-          </fieldset>
-          <button class="p-3 btn btn-success w-100 rounded-3" type="submit">
-            <span class="h5">Add to list</span>
-          </button>
-        </form>
+    <section class="vh-100 gradient-custom">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col col-xl-10">
+            <div class="card">
+              <div class="card-body p-sm-5 p-sm-5">
+                <form class="d-flex justify-content-center align-items-center mb-4" id="addForm">
+                  <div class="form-outline flex-fill">
+                    <input type="text" id="addInput" class="form-control" placeholder="New task...">
+                    <label class="form-label visually-hidden" for="addInput">New task...</label>
+                  </div>
+                  <button type="submit" class="btn btn-info ms-2" id="addButton">Add</button>
+                </form>
+    
+                <div class="tab-content">
+                  <ul class="list-group mb-0" id="taskList"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-      <div class="position-absolute top-0 start-0 d-none d-md-block">
-        <a class="page-link ps-2 pe-2 d-flex align-items-center gap-2 text-light text-bg-light bg-opacity-25" href="https://github.com/MikhailLavrov" target="_blank">
-          <span>made by</span>
-          <ion-icon size="large" name="logo-github"></ion-icon>
-          <span>MikhailLavrov</span>
-        </a>
-      </div>
+    </section>
 
-    </div>
   </main>
 
+  <!-- <template id="newTemplate">
+    <li class="list-group-item d-flex align-items-center border-0 mb-0 rounded new-item"
+      style="background-color: #f4f6f7;">
+      <label class="visually-hidden" for="doneCheckbox">Close task</label>
+      <input class="form-check-input me-2" type="checkbox" id="doneCheckbox" aria-label="..." data-action="done">
+      <span id="taskText"></span>
+    </li>
+  </template> -->
+
+  <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   </body>
 </html>
