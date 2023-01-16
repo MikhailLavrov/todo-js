@@ -119,13 +119,14 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   function makeItemEditable(evt) {
-    if (evt.target.dataset.action !== "edit") return;
-    
-    let editButton = evt.target;
-    let targetParent = editButton.closest('li');
+    document.removeEventListener('click', makeItemEditable);
+    let editTargetButton = evt.target;
+    let targetParent = editTargetButton.closest('li');
     let targetText = targetParent.querySelector('span');
     
     targetText.setAttribute('contenteditable', true);
+    targetText.classList.add('editable-text');
+    editTargetButton.textContent = 'Save'
     // set focus to the end of text length
     const range = document.createRange();
     range.selectNodeContents(targetText);
@@ -133,28 +134,27 @@ window.addEventListener('DOMContentLoaded', () => {
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(range);
-    targetText.classList.add('editable-text');
-    editButton.textContent = 'Save'
-    
+    // -----------------------------------
     let id = Number(targetParent.id);
     const task = tasks.find((task) => task.id === id);
 
-    const finishEdition = () => {
-      targetText.removeAttribute('contenteditable');
-      targetText.classList.remove('editable-text');
-      editButton.innerHTML = '&#9998;'
-      
-      task.text = targetText.textContent;
-      saveToStorage();
+    const finishEdition = (evt) => {
+      if (evt.target !== targetText || evt.keyCode == 13) {
+        targetText.removeAttribute('contenteditable');
+        targetText.classList.remove('editable-text');
+        editTargetButton.innerHTML = '&#9998;'
+        
+        task.text = targetText.textContent;
+        saveToStorage();
+
+        document.removeEventListener('click', finishEdition);
+        document.removeEventListener('keydown', finishEdition);
+        document.addEventListener('click', (evt) => evt.target.dataset.action === 'edit' ? makeItemEditable(evt) : null)
+      }
     };
     
-    document.addEventListener('click', (evt) => {
-      evt.target !== targetText ? finishEdition() : null;
-    })
-
-    document.addEventListener('keydown', (evt) => {
-      evt.keyCode == 13 ? finishEdition() : null;
-    });
+    document.addEventListener('click', finishEdition);
+    document.addEventListener('keydown', finishEdition);
   };
 
   document.addEventListener('click', (evt) => {
