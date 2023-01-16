@@ -118,8 +118,6 @@ window.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   };
 
-  // TODO Доработать со storage
-
   function makeItemEditable(evt) {
     if (evt.target.dataset.action !== "edit") return;
     
@@ -134,16 +132,16 @@ window.addEventListener('DOMContentLoaded', () => {
     
     let id = Number(targetParent.id);
     const task = tasks.find((task) => task.id === id);
-    task.text = targetText.textContent;
     
-    saveToStorage();
-
     const finishEdition = (evt) => {
       if (evt.target !== targetText) {
         targetText.removeAttribute('contenteditable');
         targetText.classList.remove('editable-text');
         editButton.innerHTML = '&#9998;'
-
+        
+        task.text = targetText.textContent;
+        saveToStorage();
+        
         document.removeEventListener('click', finishEdition);
       }
     };
