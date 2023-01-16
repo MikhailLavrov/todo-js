@@ -119,7 +119,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   function makeItemEditable(evt) {
-    document.removeEventListener('click', makeItemEditable);
+    if (evt.target.textContent !== '✎') return;
     let editTargetButton = evt.target;
     let targetParent = editTargetButton.closest('li');
     let targetText = targetParent.querySelector('span');
@@ -137,7 +137,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // -----------------------------------
     let id = Number(targetParent.id);
     const task = tasks.find((task) => task.id === id);
-
+    
     const finishEdition = (evt) => {
       if (evt.target !== targetText || evt.keyCode == 13) {
         targetText.removeAttribute('contenteditable');
@@ -149,8 +149,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
         document.removeEventListener('click', finishEdition);
         document.removeEventListener('keydown', finishEdition);
-        document.addEventListener('click', (evt) => evt.target.dataset.action === 'edit' ? makeItemEditable(evt) : null)
-      }
+        document.addEventListener('click', (evt) => evt.target.dataset.action === 'edit' ? makeItemEditable : null);
+      };
     };
     
     document.addEventListener('click', finishEdition);
