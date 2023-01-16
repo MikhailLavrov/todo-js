@@ -7,6 +7,7 @@ const taskList = document.querySelector('#taskList');
 const emptyItem = `<li class="list-group-item d-flex align-items-center justify-content-center border-0 rounded" id="emptyItem">
 Empty
 </li>`
+const initialEditButtonContent = '✎';
 
 window.addEventListener('DOMContentLoaded', () => {
   let tasks = [];
@@ -119,7 +120,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   function makeItemEditable(evt) {
-    if (evt.target.textContent !== '✎') return;
+    if (evt.target.textContent !== initialEditButtonContent) return;
     let editTargetButton = evt.target;
     let targetParent = editTargetButton.closest('li');
     let targetText = targetParent.querySelector('span');
