@@ -50,7 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {
   
     const newTask = `
     <li class="${doneClassItem} list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" id="${task.id}" 
-      style="background-color: #f4f6f7;">
+      style="background-color: #f5fcff;">
       <span class="${doneClassText} w-100 overflow-hidden" id="taskText">${task.text}</span>
       
       <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
@@ -126,27 +126,35 @@ window.addEventListener('DOMContentLoaded', () => {
     let targetText = targetParent.querySelector('span');
     
     targetText.setAttribute('contenteditable', true);
-    targetText.focus();
+    // set focus to the end of text length
+    const range = document.createRange();
+    range.selectNodeContents(targetText);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
     targetText.classList.add('editable-text');
     editButton.textContent = 'Save'
     
     let id = Number(targetParent.id);
     const task = tasks.find((task) => task.id === id);
-    
-    const finishEdition = (evt) => {
-      if (evt.target !== targetText) {
-        targetText.removeAttribute('contenteditable');
-        targetText.classList.remove('editable-text');
-        editButton.innerHTML = '&#9998;'
-        
-        task.text = targetText.textContent;
-        saveToStorage();
-        
-        document.removeEventListener('click', finishEdition);
-      }
-    };
 
-    document.addEventListener('click', finishEdition);
+    const finishEdition = () => {
+      targetText.removeAttribute('contenteditable');
+      targetText.classList.remove('editable-text');
+      editButton.innerHTML = '&#9998;'
+      
+      task.text = targetText.textContent;
+      saveToStorage();
+    };
+    
+    document.addEventListener('click', (evt) => {
+      evt.target !== targetText ? finishEdition() : null;
+    })
+
+    document.addEventListener('keydown', (evt) => {
+      evt.keyCode == 13 ? finishEdition() : null;
+    });
   };
 
   document.addEventListener('click', (evt) => {
