@@ -44,14 +44,18 @@
 
   </main>
 
-  <!-- <template id="newTemplate">
-    <li class="list-group-item d-flex align-items-center border-0 mb-0 rounded new-item"
-      style="background-color: #f4f6f7;">
-      <label class="visually-hidden" for="doneCheckbox">Close task</label>
-      <input class="form-check-input me-2" type="checkbox" id="doneCheckbox" aria-label="..." data-action="done">
-      <span id="taskText"></span>
+  <template id="newTemplate">
+    <li class="list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" 
+      style="background-color: #f5fcff;">
+      <span class="w-100 overflow-hidden"></span>
+      
+      <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
+      <button class="btn  btn-outline-info btn-sm" type="button" data-action="edit">&#9998;</button>
+        <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
+        <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
+      </div>
     </li>
-  </template> -->
+  </template>
 
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/main.js"></script>

@@ -2,8 +2,8 @@ const addForm = document.querySelector('#addForm');
 const addInput = document.querySelector('#addInput');
 const addButton = document.querySelector('#addButton');
 const taskList = document.querySelector('#taskList');
-// const templateFragment = document.querySelector('#newTemplate').content;
-// const template = templateFragment.querySelector('li');
+const newTemplateFragment = document.querySelector('#newTemplate').content;
+const newTemplate = newTemplateFragment.querySelector('li');
 const emptyItem = `<li class="list-group-item d-flex align-items-center justify-content-center border-0 rounded" id="emptyItem">
 Empty
 </li>`
@@ -48,20 +48,16 @@ window.addEventListener('DOMContentLoaded', () => {
   function renderTask(task) {
     const doneClassText = task.done ? 'done-text' : null;
     const doneClassItem = task.done ? 'done-item' : null;
-  
-    const newTask = `
-    <li class="${doneClassItem} list-group-item d-flex align-items-center border-0 mb-1 rounded new-item" id="${task.id}" 
-      style="background-color: #f5fcff;">
-      <span class="${doneClassText} w-100 overflow-hidden" id="taskText">${task.text}</span>
-      
-      <div class="ms-auto d-flex align-items-center gap-2 justify-content-center ps-2">
-      <button class="btn  btn-outline-info btn-sm" type="button" data-action="edit">&#9998;</button>
-        <button class="btn btn-outline-success btn-sm" type="button" data-action="done">&#10003;</button>
-        <button class="btn btn-outline-danger btn-sm" type="button" data-action="delete">&#10005;</button>
-      </div>
-    </li>`;
+
+    const newItem = newTemplate.cloneNode(true);
+    const textElement = newItem.querySelector('span');
     
-    taskList.insertAdjacentHTML('afterbegin', newTask);
+    newItem.classList.add(doneClassItem);
+    newItem.setAttribute('id', task.id);
+    textElement.classList.add(doneClassText);
+    textElement.textContent = task.text;
+    
+    taskList.prepend(newItem);
   };
 
   function removeTask(evt) {
